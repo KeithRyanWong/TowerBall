@@ -30,7 +30,9 @@ This project will be implemented with the following technologies:
 In addition to the webpack entry file, there will be three scripts involved in this project:
 
 `block.js`: this script will handle the logic for creating and simulating blocks affected by gravity
+
 `ball.js`: this script will handle the logic of the ball's trajectory using vectors
+
 `game.js`: this script with handle the logic of the game's procedures, environment setup and collisions
 
 ### Implementation Timeline

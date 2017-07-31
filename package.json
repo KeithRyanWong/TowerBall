@@ -1,0 +1,25 @@
+{
+  "name": "TowerBall",
+  "version": "1.0.0",
+  "description": "### Background",
+  "main": "index.js",
+  "dependencies": {
+    "webpack": "^3.4.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "webpack": "webpack -w",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KeithRyanWong/TowerBall.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KeithRyanWong/TowerBall/issues"
+  },
+  "homepage": "https://github.com/KeithRyanWong/TowerBall#readme"
+}
