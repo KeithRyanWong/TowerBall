@@ -8,23 +8,21 @@ document.addEventListener('DOMContentLoaded', (event) => {
   const ctx = canvas.getContext('2d');
   const engine = Engine.create();
   const world = engine.world;
-  // const render = Render.create({
-  //   canvas: canvas,
-  //   engine: engine,
-  //   options: {
-  //     width: 500,
-  //     height: 600,
-  //     background: 'transparent',
-  //     wireframes: false,
-  //     showAngleIndicator: false
-  //   }
-  // });
-  
+
+  canvas.addEventListener('mousedown', destroyBlock);
 
   let game = new Game(500, 650, world);
   let gameview = new GameView(game, ctx);
   
   gameview.start();
   Engine.run(engine);
-  // Render.run(render);
 });
+
+function destroyBlock(e){
+  e.preventDefault();
+  let width = document.getElementsByTagName('body')[0].clientWidth;
+  let margin = Math.floor((width - 500) / 2);
+  let canvasX = e.pageX - margin;
+  let canvasY = e.pageY - 20;
+  console.log("x ", canvasX, " y ", canvasY);
+}
