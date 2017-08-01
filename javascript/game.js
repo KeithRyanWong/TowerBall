@@ -31,6 +31,7 @@ class Game {
     this.tower.forEach((object, i) => {
       if (i !== 0 && object.occupies(canvasX, canvasY)){
         Composite.remove(this.world, object.body);
+        this.tower.splice(i, 1);
       }
     });
   }
@@ -40,12 +41,12 @@ class Game {
     let { x, y, width, length } = this.towerArea;
     let space = Math.floor(width * length * 0.70);
     tower.push(new GravNode(x + Math.floor(width / 2), length - 3, width, 3, this.world));
-    // while( tower.reduce((sum, block) => ( sum + block.area ), 0 ) < space ) {
-    //   let block = new Block(x, y, Util.rand(30, 50), Util.rand(30, 50), this.world);
-    //   x = (x + 20) % (width * 2);
-    //   y += 1;
-    //   tower.push(block);
-    // }
+    while( tower.reduce((sum, block) => ( sum + block.area ), 0 ) < space ) {
+      let block = new Block(x, y, Util.rand(30, 50), Util.rand(30, 50), this.world);
+      x = (x + 20) % (width * 2);
+      y += 1;
+      tower.push(block);
+    }
     
     tower.push(new Block(x + 85, y, Util.rand(30, 50), Util.rand(30, 50), this.world));
     
@@ -55,11 +56,11 @@ class Game {
   draw(ctx) {
     ctx.clearRect(0, 0, this.DIM_X, this.DIM_Y);
     this.tower.forEach(object => object.draw(ctx));
-    // this.destroyOffScreen();
+    this.destroyOffScreen();
   }
 
   destroyOffScreen() {
-    for (let i = 1; i < this.towers.length; i++) {
+    for (let i = 1; i < this.tower.length; i++) {
       let obj = this.tower[i];
       if (obj.canBeDestroyed(this.DIM_X, this.DIM_Y)) {
         World.remove(this.world, obj.body);
