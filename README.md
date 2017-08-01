@@ -2,7 +2,7 @@
 
 ### Background
 
-A game simulating a 3-D physical experience using 2-D technology. The goal is to get the ball into the basket atop a tower of blocks.
+A game simulating a 3-D physical experience using 2-D technology. The goal is to get the ball into the basket atop a tower of carefully balanced blocks. Blocks may be destroyed upon being hit, and you may lose the basket entirely! Fire carefully.
 
 ### Functionality & MVP  
 
