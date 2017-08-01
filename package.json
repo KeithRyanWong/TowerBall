@@ -4,6 +4,7 @@
   "description": "### Background",
   "main": "index.js",
   "dependencies": {
+    "matter-js": "^0.13.0",
     "webpack": "^3.4.1"
   },
   "devDependencies": {},
