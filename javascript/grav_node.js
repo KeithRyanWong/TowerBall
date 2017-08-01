@@ -4,7 +4,17 @@ import { Engine, Render, World, Bodies } from 'matter-js';
 
 class GravNode {
   constructor(x, y, w, h, world) {
-    this.body = Bodies.rectangle(x, y, w, h, {isStatic: true});
+    this.options = {
+      isStatic: true,
+      friction: 0.9,
+      frictionStatic: 10,
+      restitution: 0,
+      render: { 
+        fillStyle: '#000000',
+        lineWidth: 1
+      }
+    };
+    this.body = Bodies.rectangle(x, y, w, h, this.options);
     this.w = w;
     this.h = h;
     World.add(world, [this.body]);
@@ -18,11 +28,13 @@ class GravNode {
     ctx.beginPath();
     ctx.lineWidth = 1;
     ctx.strokeStyle = '#000000';
-    ctx.moveTo(x, y);
-    ctx.lineTo(x + this.w , y);
-    ctx.lineTo(x + this.w, y + this.h);
-    ctx.lineTo(x, y + this.h);
-    ctx.lineTo(x, y);
+    let vertices = this.body.vertices;
+    ctx.moveTo(vertices[0].x, vertices[0].y);
+
+    for (let j = 1; j < vertices.length; j += 1) {
+        ctx.lineTo(vertices[j].x, vertices[j].y);
+    }
+    ctx.lineTo(vertices[0].x, vertices[0].y);
     ctx.stroke();
     ctx.fillStyle = this.color;
     ctx.fill();
