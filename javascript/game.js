@@ -13,7 +13,7 @@ class Game {
       width: Math.floor(DIM_X / 3),
       length: Math.floor(DIM_Y / 6) * 4
     };
-    // console.log(DIM_X / 3)
+
     this.world = world;
     this.tower = this.createTower();
 
@@ -27,7 +27,6 @@ class Game {
     let margin = Math.floor((width - 500) / 2);
     let canvasX = e.pageX - margin;
     let canvasY = e.pageY - 20;
-    console.log("x ", canvasX, " y ", canvasY);
     this.tower.forEach((object, i) => {
       if (i !== 0 && object.occupies(canvasX, canvasY)){
         Composite.remove(this.world, object.body);
@@ -41,14 +40,26 @@ class Game {
     let { x, y, width, length } = this.towerArea;
     let space = Math.floor(width * length * 0.70);
     tower.push(new GravNode(x + Math.floor(width / 2), length - 3, width, 3, this.world));
-    while( tower.reduce((sum, block) => ( sum + block.area ), 0 ) < space ) {
-      let block = new Block(x, y, Util.rand(30, 50), Util.rand(30, 50), this.world);
-      x = (x + 20) % (width * 2);
-      y += 1;
-      tower.push(block);
-    }
+
+    // let base = length + 20;
+    // while(tower.length < 6) {
+    //   let lastBase = base;
+    //   let delta = Util.rand(30, 50);
+    //   base -= delta;
+    //   let block = new Block(Util.rand(x, x * 2), base, Util.rand(30, 50), delta, this.world);
+      
+    //   tower.push(block);
+
+    //   if (!this.validPlacement(tower)) {
+    //     base = lastBase;
+    //     tower.pop();
+    //   }
+    // }
     
-    tower.push(new Block(x + 85, y, Util.rand(30, 50), Util.rand(30, 50), this.world));
+    tower.push(new Block(x + 85, length - 60 + 20, Util.rand(20, 120), 60, this.world));
+    tower.push(new Block(x + 85, length - 60 - 40 + 20, Util.rand(20, 120), 40, this.world));
+    tower.push(new Block(x + 85, length - 60 - 40 - 70 + 20, Util.rand(20, 120), 70, this.world));
+    tower.push(new Block(x + 85, length - 60 - 40 - 70 - 30 + 20, Util.rand(20, 120), 30, this.world));
     
     return tower;
   }
@@ -58,6 +69,8 @@ class Game {
     this.tower.forEach(object => object.draw(ctx));
     this.destroyOffScreen();
   }
+
+
 
   destroyOffScreen() {
     for (let i = 1; i < this.tower.length; i++) {

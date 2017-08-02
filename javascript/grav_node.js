@@ -6,13 +6,9 @@ class GravNode {
   constructor(x, y, w, h, world) {
     this.options = {
       isStatic: true,
-      friction: 0.9,
+      friction: 1,
       frictionStatic: 10,
-      restitution: 0,
-      render: { 
-        fillStyle: '#000000',
-        lineWidth: 1
-      }
+      restitution: 0
     };
     this.body = Bodies.rectangle(x, y, w, h, this.options);
     this.w = w;
@@ -26,8 +22,8 @@ class GravNode {
   draw(ctx) {
     let {x, y} = this.body.position;
     ctx.beginPath();
-    ctx.lineWidth = 1;
-    ctx.strokeStyle = '#000000';
+    // ctx.lineWidth = 1;
+    // ctx.strokeStyle = '#000000';
     let vertices = this.body.vertices;
     ctx.moveTo(vertices[0].x, vertices[0].y);
 
@@ -35,7 +31,7 @@ class GravNode {
         ctx.lineTo(vertices[j].x, vertices[j].y);
     }
     ctx.lineTo(vertices[0].x, vertices[0].y);
-    ctx.stroke();
+    // ctx.stroke();
     ctx.fillStyle = this.color;
     ctx.fill();
     ctx.closePath();

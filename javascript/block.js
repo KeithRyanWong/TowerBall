@@ -1,11 +1,11 @@
 import * as Util from './utils.js';
-import { Engine, Render, World, Bodies } from 'matter-js';
+import { Engine, Render, World, Bodies, Vector, Vertices } from 'matter-js';
 
 
 class Block {
   constructor(x, y, w, h, world) {
     this.options = {
-      friction: 0.7,
+      friction: 1,
       restitution: 0,
       frictionStatic: 10,
       render: { 
@@ -21,19 +21,30 @@ class Block {
     this.area = w * h;
   }
 
+  canBeDestroyed(w, h) {
+    let {x, y} = this.body.position;
+    return y > h;
+  }
+
+  occupies(x, y) {
+    let pos = Vector.create(x, y);
+    return Vertices.contains(this.body.vertices, pos);
+  }
 
   draw(ctx) {
     let {x, y} = this.body.position;
+
     ctx.beginPath();
     ctx.lineWidth = 1;
     ctx.strokeStyle = '#000000';
+
     let vertices = this.body.vertices;
     ctx.moveTo(vertices[0].x, vertices[0].y);
-
-    for (let j = 1; j < vertices.length; j += 1) {
-        ctx.lineTo(vertices[j].x, vertices[j].y);
+    for (let i = 1; i < vertices.length; i++) {
+        ctx.lineTo(vertices[i].x, vertices[i].y);
     }
     ctx.lineTo(vertices[0].x, vertices[0].y);
+
     ctx.stroke();
     ctx.fillStyle = this.color;
     ctx.fill();
