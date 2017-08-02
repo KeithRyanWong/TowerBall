@@ -6,8 +6,9 @@ class GameView {
 
   start() {
     // set timeout interval
+    let { DIM_X, DIM_Y } = this.game;
     setInterval(() => {
-      this.ctx.clearRect(0, 0, 500, 650);
+      this.ctx.clearRect(0, 0, DIM_X, DIM_Y);
       this.game.draw(this.ctx);
     }, 10);
   }

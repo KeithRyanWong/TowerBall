@@ -37,32 +37,61 @@ class Game {
 
   createTower() {
     const tower = [];
+    let attempts = 0;
     let { x, y, width, length } = this.towerArea;
     let space = Math.floor(width * length * 0.70);
     tower.push(new GravNode(x + Math.floor(width / 2), length - 3, width, 3, this.world));
 
-    // let base = length + 20;
-    // while(tower.length < 6) {
-    //   let lastBase = base;
-    //   let delta = Util.rand(30, 50);
-    //   base -= delta;
-    //   let block = new Block(Util.rand(x, x * 2), base, Util.rand(30, 50), delta, this.world);
+    let base = length + 20;
+    while(tower.length < 7) {
+      let lastBase = base;
+      let delta = Util.rand(30, 50);
+      base -= delta;
+      let block = new Block(Util.rand(x, x * 2), base, Util.rand(20, 120), delta, this.world);
       
-    //   tower.push(block);
+      tower.push(block);
 
-    //   if (!this.validPlacement(tower)) {
-    //     base = lastBase;
-    //     tower.pop();
-    //   }
-    // }
+      if (!this.validPlacement(tower) && attempts < 1000) {
+        base = lastBase;
+        Composite.remove(this.world, tower.pop().body);
+        attempts++;
+      } else if (attempts >= 500) {
+        while(tower.length > 1) {
+          Composite.remove(this.world, tower.pop().body);
+        }
+        this.makeDefaultTower(tower, x, length);
+        break;
+      }
+    }
     
+   
+    
+
+    //add basket
+    return tower;
+  }
+
+  makeDefaultTower(tower, x, length) {    
     tower.push(new Block(x + 85, length - 60 + 20, Util.rand(20, 120), 60, this.world));
     tower.push(new Block(x + 85, length - 60 - 40 + 20, Util.rand(20, 120), 40, this.world));
     tower.push(new Block(x + 85, length - 60 - 40 - 70 + 20, Util.rand(20, 120), 70, this.world));
     tower.push(new Block(x + 85, length - 60 - 40 - 70 - 30 + 20, Util.rand(20, 120), 30, this.world));
-    
-    return tower;
   }
+
+  validPlacement(tower) {
+    // return true;
+    for (let i = tower.length - 1; i > 0; i--) {
+      let CoGOfLastBlock = Util.centerOfGravity(tower.slice(i));
+      let bound1 = tower[i - 1].body.bounds.min.x;
+      let bound2 = tower[i - 1].body.bounds.max.x;
+      if(CoGOfLastBlock < (bound1 + 20) || CoGOfLastBlock > (bound2 - 20)) {
+        return false;
+      }
+    }
+    return true;
+  }
+  
+
 
   draw(ctx) {
     ctx.clearRect(0, 0, this.DIM_X, this.DIM_Y);
