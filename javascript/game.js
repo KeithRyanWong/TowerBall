@@ -35,7 +35,15 @@ class Game {
     };
 
     tower.push(new GravNode(mark.x, mark.y, mark.x, 3));
+    this.generateBlocks(tower, mark);
+    this.placeBasket(tower, mark);
+    
 
+
+    return tower;
+  }
+
+  generateBlocks(tower, mark) {
     while (tower.length < 7) {
       let lastMarkY = mark.y;
       let delta = Util.rand(30, 50);
@@ -47,12 +55,20 @@ class Game {
       if(!Util.validPlacement(tower)) {
         mark.y = lastMarkY;
         tower.pop();
-      }
-
-      
+      }      
     }
+  }
 
-    return tower;
+  placeBasket(tower, mark) {
+    mark.y -= 32;
+    while (tower.length < 8) {
+      let block = new Block(mark.x + Util.rand(0, mark.x), mark.y, 20, 30);
+      tower.push(block);
+
+      if(!Util.validPlacement(tower)) {
+        tower.pop();
+      }      
+    }
   }
 
 
