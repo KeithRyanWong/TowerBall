@@ -36,6 +36,22 @@ class Game {
 
     tower.push(new GravNode(mark.x, mark.y, mark.x, 3));
 
+    while (tower.length < 7) {
+      let lastMarkY = mark.y;
+      let delta = Util.rand(30, 50);
+      mark.y -= delta + 2;
+
+      let block = new Block(mark.x + Util.rand(0, mark.x), mark.y, Util.rand(20, 120), delta);
+      tower.push(block);
+
+      if(!Util.validPlacement(tower)) {
+        mark.y = lastMarkY;
+        tower.pop();
+      }
+
+      
+    }
+
     return tower;
   }
 
