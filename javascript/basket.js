@@ -1,6 +1,6 @@
 import * as Util from './util';
 
-class GravNode {
+class Basket {
   constructor(x, y, w, h) {
     this.position = {
       x,
@@ -8,14 +8,13 @@ class GravNode {
     };
     this.w = w;
     this.h = h;
-    // this.bounds = {
-    //   1: [x, y],
-    //   2: [x + w, y],
-    //   3: [x + w, y + h],
-    //   4: [x, y + h]
-    // };
-    this.color = Util.randColor();
+    
+    this.color = 'black';
     this.area = w * h;
+    this.velocity = {
+      x: 0,
+      y: 0
+    };
   }
 
   bounds(){
@@ -63,4 +62,4 @@ class GravNode {
   }
 }
 
-export default GravNode;
+export default Basket;

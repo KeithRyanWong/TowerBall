@@ -8,6 +8,12 @@ class Block {
     };
     this.w = w;
     this.h = h;
+    // this.bounds = {
+    //   1: [x, y],
+    //   2: [x + w, y],
+    //   3: [x + w, y + h],
+    //   4: [x, y + h]
+    // };
     this.color = Util.randColor();
     this.area = w * h;
     this.velocity = {
@@ -16,6 +22,33 @@ class Block {
     };
   }
 
+  bounds(){
+    let { x, y } = this.position;
+    let w = this.w;
+    let h = this.h;
+    return {
+      left: x,
+      right: x + w,
+      top: y,
+      bottom: y + h,
+      upperLeft: { 
+        x, 
+        y 
+      },
+      upperRight: { 
+        x: x + w, 
+        y
+      },
+      bottomLeft: {
+        x: x + w, 
+        y: y + h
+      },
+      bottomRight: {
+        x, 
+        y: y + h
+      }
+    };
+  }
 
   draw(ctx) {
     let {x, y} = this.position;
