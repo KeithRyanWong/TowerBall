@@ -1,7 +1,7 @@
 import Block from './block.js';
 import GravNode from './grav_node.js';
 import * as Util from './utils';
-import { Engine, Render, World, Bodies, Vector, Vertices, Composite } from 'matter-js';
+import { Engine, Render, World, Bodies, Vector, Vertices, Composite, Sleeping } from 'matter-js';
 
 class Game {
   constructor(DIM_X=500, DIM_Y=650, world) {
@@ -16,9 +16,16 @@ class Game {
 
     this.world = world;
     this.tower = this.createTower();
-
+    this.tower.forEach((block) => {
+      Sleeping.set(block.body, true);
+    });
+    
     const canvas = document.getElementById("main");
     canvas.addEventListener('mousedown', this.destroyBlock.bind(this));
+    this.tower.forEach((block) => {
+      Sleeping.set(block.body, false);
+    });
+
   }
 
   destroyBlock(e){
@@ -42,12 +49,13 @@ class Game {
     let space = Math.floor(width * length * 0.70);
     tower.push(new GravNode(x + Math.floor(width / 2), length - 3, width, 3, this.world));
 
-    let base = length + 20;
+    let base = length + 13;
+    let start = x + Util.rand(10,160); 
     while(tower.length < 7) {
       let lastBase = base;
       let delta = Util.rand(30, 50);
       base -= delta;
-      let block = new Block(Util.rand(x, x * 2), base, Util.rand(20, 120), delta, this.world);
+      let block = new Block(start, base, Util.rand(20, 120), delta, this.world);
       
       tower.push(block);
 
@@ -55,7 +63,7 @@ class Game {
         base = lastBase;
         Composite.remove(this.world, tower.pop().body);
         attempts++;
-      } else if (attempts >= 500) {
+      } else if (attempts >= 1000) {
         while(tower.length > 1) {
           Composite.remove(this.world, tower.pop().body);
         }
@@ -71,11 +79,12 @@ class Game {
     return tower;
   }
 
-  makeDefaultTower(tower, x, length) {    
-    tower.push(new Block(x + 85, length - 60 + 20, Util.rand(20, 120), 60, this.world));
-    tower.push(new Block(x + 85, length - 60 - 40 + 20, Util.rand(20, 120), 40, this.world));
-    tower.push(new Block(x + 85, length - 60 - 40 - 70 + 20, Util.rand(20, 120), 70, this.world));
-    tower.push(new Block(x + 85, length - 60 - 40 - 70 - 30 + 20, Util.rand(20, 120), 30, this.world));
+  makeDefaultTower(tower, x, length) {   
+    let start = x + Util.rand(10,160); 
+    tower.push(new Block(start, length - 60 + 24, Util.rand(20, 120), 60, this.world));
+    tower.push(new Block(start, length - 60 - 40 + 12, Util.rand(20, 120), 40, this.world));
+    tower.push(new Block(start, length - 60 - 40 - 70 + 26, Util.rand(20, 120), 70, this.world));
+    tower.push(new Block(start, length - 60 - 40 - 70 - 30 + 5, Util.rand(20, 120), 30, this.world));
   }
 
   validPlacement(tower) {
