@@ -1,20 +1,25 @@
-import * as Util from './utils.js';
-import { Engine, Render, World, Bodies } from 'matter-js';
-
+import * as Util from './util';
 
 class Block {
-  constructor(x, y, w, h, world) {
-    this.body = Bodies.rectangle(x, y, w, h);
+  constructor(x, y, w, h) {
+    this.position = {
+      x,
+      y
+    };
     this.w = w;
     this.h = h;
-    World.add(world, [this.body]);
     this.color = Util.randColor();
     this.area = w * h;
+    this.velocity = {
+      x: 0,
+      y: 0
+    };
   }
 
 
   draw(ctx) {
-    let {x, y} = this.body.position;
+    console.log('here')
+    let {x, y} = this.position;
     ctx.beginPath();
     ctx.lineWidth = 1;
     ctx.strokeStyle = '#000000';
