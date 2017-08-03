@@ -1,6 +1,6 @@
 import * as Util from './util';
 
-class Block {
+class GravNode {
   constructor(x, y, w, h) {
     this.position = {
       x,
@@ -10,10 +10,6 @@ class Block {
     this.h = h;
     this.color = Util.randColor();
     this.area = w * h;
-    this.velocity = {
-      x: 0,
-      y: 0
-    };
   }
 
 
@@ -34,4 +30,4 @@ class Block {
   }
 }
 
-export default Block;
+export default GravNode;

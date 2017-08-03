@@ -9,6 +9,5 @@ document.addEventListener('DOMContentLoaded', () => {
   
   const game = new Game(width, height);
   const gameview = new GameView(game, ctx);
-  console.log('asd');
   gameview.start();
 });

@@ -7,7 +7,6 @@ class GameView {
   
 
   start() {
-    console.log('he')
     setTimeout(() => { 
       this.game.draw(this.ctx);
     }, 10);
