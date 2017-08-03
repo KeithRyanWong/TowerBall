@@ -53,14 +53,14 @@ class Block {
   draw(ctx) {
     let {x, y} = this.position;
     ctx.beginPath();
-    ctx.lineWidth = 1;
-    ctx.strokeStyle = '#000000';
+    // ctx.lineWidth = 1;
+    // ctx.strokeStyle = '#000000';
     ctx.moveTo(x, y);
     ctx.lineTo(x + this.w , y);
     ctx.lineTo(x + this.w, y + this.h);
     ctx.lineTo(x, y + this.h);
     ctx.lineTo(x, y);
-    ctx.stroke();
+    // ctx.stroke();
     ctx.fillStyle = this.color;
     ctx.fill();
     ctx.closePath();

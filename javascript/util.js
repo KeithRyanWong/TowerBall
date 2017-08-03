@@ -29,11 +29,48 @@ export const centerOfGravity = (tower) => {
 export const validPlacement = (tower) => {
   for (let i = tower.length - 1; i > 0; i--) {
     let CoGOfLastBlock = centerOfGravity(tower.slice(i));
-    let bound1 = tower[i - 1].position.x;
-    let bound2 = tower[i - 1].position.x + tower[i - 1].w;
-    if(CoGOfLastBlock < (bound1) || CoGOfLastBlock > (bound2)) {
+    let bottomBlock = tower[i - 1];
+    let bound1 = bottomBlock.position.x;
+    let bound2 = bottomBlock.position.x + bottomBlock.w;
+    //switch parity of variable to constrain within valid CoG
+    if(CoGOfLastBlock < (bound1) - 10 || CoGOfLastBlock > (bound2) + 10) {
       return false;
     }
   }
   return true;
-}
+};
+
+export const collisionDetected = (block, block2) => {
+  let yCollision1 = ( 
+      block.bounds().top < block2.bounds().bottom &&
+      block.bounds().bottom > block2.bounds().bottom 
+  ) || ( 
+      block.bounds().top < block2.bounds().top &&
+      block.bounds().bottom > block2.bounds().top
+  ); 
+  let yCollision2 = ( 
+      block2.bounds().top < block.bounds().bottom &&
+      block2.bounds().bottom > block.bounds().bottom 
+  ) || ( 
+      block2.bounds().top < block.bounds().top &&
+      block2.bounds().bottom > block.bounds().top
+  ); 
+
+  let xCollision1 = ( 
+      block.bounds().left < block2.bounds().left &&
+      block.bounds().right > block2.bounds().left
+  ) || (
+      block.bounds().left < block2.bounds().right &&
+      block.bounds().right > block2.bounds().right
+  );
+  let xCollision2 = ( 
+      block2.bounds().left < block.bounds().left &&
+      block2.bounds().right > block.bounds().left
+  ) || (
+      block2.bounds().left < block.bounds().right &&
+      block2.bounds().right > block.bounds().right
+  );
+
+
+  return((yCollision1 && xCollision1) || (yCollision2 && xCollision2));
+};
