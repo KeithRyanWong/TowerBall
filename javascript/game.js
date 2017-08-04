@@ -23,6 +23,8 @@ class Game {
 
 
   registerHit(position) {
+
+    //update count
     // debugger;
     // e.preventDefault();
     let width = document.getElementsByTagName('body')[0].clientWidth;
@@ -34,6 +36,9 @@ class Game {
     this.tower.forEach((object, i) => {
       // debugger;
       if (i !== 0 && object.occupies(canvasX, canvasY)){
+        if(i === this.tower.length-1){
+          this.gameWon();
+        }
         this.tower.splice(i, 1);
       }
     });
@@ -113,6 +118,11 @@ class Game {
         obj.position.y += obj.velocity.y;
       }
     });
+
+    let lastBlock = this.tower[this.tower.length - 1];
+    if (lastBlock instanceof Basket && lastBlock.bounds().bottom > Math.floor(this.DIM_Y * 0.70) - 10) {
+      this.gameLost();
+    }
   }
 
   applyGravity() {
@@ -139,6 +149,15 @@ class Game {
         }
       }
     }
+  }
+
+  gameWon() {
+    document.getElementById('message').innerText = 'Nice Shot!';
+    document.getElementById('message').className = '';
+  }
+  gameLost() {
+    document.getElementById('message').innerText = 'Better luck next time ';
+    document.getElementById('message').className = '';
   }
 }
 

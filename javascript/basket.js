@@ -19,8 +19,9 @@ class Basket {
 
   occupies(x, y) {
     return x > this.bounds().left && x < this.bounds().right &&
-           y > this.bounds().bottom && y < this.bounds().top;
+           y > this.bounds().top && y < this.bounds().bottom;
   }
+
   
   bounds(){
     let { x, y } = this.position;
