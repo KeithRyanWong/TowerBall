@@ -62,14 +62,14 @@ class User {
 
     this.interval = setInterval(() => {
       this.ball.velocity.y += 0.20;
-      this.ball.position.z += 0.05;
+      this.ball.position.z += 0.05 * 100 / this.power;
       // console.log(this.ball.position);
     }, 10);
 
     setTimeout(() => {
       clearInterval(this.interval);
       console.log('hit: ', this.ball.position);
-
+      this.game.registerHit(this.ball.position);
       //log hit and reset
       this.reset.call(this);
     }, 2200 * (this.power / 100));
