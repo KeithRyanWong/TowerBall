@@ -5,8 +5,8 @@ import Basket from './basket';
 
 
 class Game {
-  constructor(DIM_X, DIM_Y, user){
-    this.user = user;
+  constructor(DIM_X, DIM_Y){
+    // this.user = user;
     this.DIM_X = DIM_X;
     this.DIM_Y = DIM_Y;
     this.origin = {
@@ -22,13 +22,15 @@ class Game {
 
 
 
-  destroyBlock(e) {
+  registerHit(position) {
     // debugger;
     // e.preventDefault();
     let width = document.getElementsByTagName('body')[0].clientWidth;
     let margin = Math.floor((width - this.DIM_X) / 2);
-    let canvasX = e.pageX - margin;
-    let canvasY = e.pageY - 20;
+    let canvasX = position.x;
+    let canvasY = position.y;
+    // let canvasX = e.pageX - margin;
+    // let canvasY = e.pageY - 20;
     this.tower.forEach((object, i) => {
       // debugger;
       if (i !== 0 && object.occupies(canvasX, canvasY)){
