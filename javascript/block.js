@@ -50,6 +50,11 @@ class Block {
     };
   }
 
+  occupies(x, y) {
+    return x > this.bounds().left && x < this.bounds().right &&
+           y > this.bounds().top && y < this.bounds().bottom;
+  }
+
   draw(ctx) {
     let {x, y} = this.position;
     ctx.beginPath();

@@ -13,6 +13,24 @@ class Game {
     };
 
     this.tower = this.setTower();
+
+    const canvas = document.getElementById("main");
+    canvas.addEventListener('mousedown', this.destroyBlock.bind(this));
+  }
+
+  destroyBlock(e) {
+    // debugger;
+    e.preventDefault();
+    let width = document.getElementsByTagName('body')[0].clientWidth;
+    let margin = Math.floor((width - this.DIM_X) / 2);
+    let canvasX = e.pageX - margin;
+    let canvasY = e.pageY - 20;
+    this.tower.forEach((object, i) => {
+      // debugger;
+      if (i !== 0 && object.occupies(canvasX, canvasY)){
+        this.tower.splice(i, 1);
+      }
+    });
   }
 
   getX() {

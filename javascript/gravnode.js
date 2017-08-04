@@ -18,6 +18,10 @@ class GravNode {
     this.area = w * h;
   }
 
+  occupies(x, y) {
+    return false;
+  }
+
   bounds(){
     let { x, y } = this.position;
     let w = this.w;
