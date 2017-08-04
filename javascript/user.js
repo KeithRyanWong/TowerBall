@@ -4,6 +4,8 @@ import AngleBar from './anglebar';
 
 class User {
   constructor(ctx, w, h) {
+    this.w = w;
+    this.h = h;
     this.ctx = ctx;
 
     // let width = document.getElementsByTagName('body')[0].clientWidth;
@@ -56,10 +58,18 @@ class User {
   applySpeed() {
     this.ball.velocity.y = this.velocity.y;
     this.ball.velocity.x = this.velocity.x;
+
     this.interval = setInterval(() => {
       this.ball.velocity.y += 0.20;
+      this.ball.position.z += 0.05;
       console.log(this.ball.position);
     }, 10);
+
+    setTimeout(() => {
+      clearInterval(this.interval);
+      console.log('hit: ', this.ball.position);
+      this.ball = new Ball(this.w / 2,this.h - 20);
+    }, 2200);
   }
 
   moveBall() {
