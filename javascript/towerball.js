@@ -1,5 +1,6 @@
 import Game from './game';
 import GameView from './gameview';
+import User from './user';
 
 document.addEventListener('DOMContentLoaded', () => {
   const canvas = document.getElementById("main");
@@ -8,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const ctx = canvas.getContext('2d');
   
   const game = new Game(width, height);
-  const gameview = new GameView(game, ctx, width, height);
+  const user = new User(ctx, width, height);
+  const gameview = new GameView(game, user, ctx, width, height);
   gameview.start();
 });
