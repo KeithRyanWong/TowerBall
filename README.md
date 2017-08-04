@@ -8,8 +8,8 @@ A game simulating a 3-D physical experience using 2-D technology. The goal is to
 
 With this TowerBall game, users will be able to:
 
-- [ ] See/change the trajectory of their ball via mouse and power slider
-- [ ] Fire the ball and destroy blocks
+- [x] See/change the trajectory of their ball via power slider
+- [x] Fire the ball and destroy blocks
 - [ ] Start a new game after it ends
 
 ### Wireframes
