@@ -13,7 +13,6 @@ class GameView {
     
     setInterval(() => { 
       this.ctx.clearRect(0, 0, this.w, this.h);
-      this.game.cycle();
       this.game.draw(this.ctx);
       this.user.cycle();
       this.user.draw(this.ctx);

@@ -2,9 +2,9 @@ class PowerBar {
   constructor() {
     this.direction = 1;
 
-    setInterval(() => {
+    this.interval = setInterval(() => {
       this.setPower();
-    }, 5);
+    }, 10);
   }
   
   setPower(){
@@ -12,7 +12,7 @@ class PowerBar {
     let currentPower = parseInt(power.value);
     if ( currentPower >= 100 ) {
       this.direction = -1;
-    } else if (currentPower <= 0) {
+    } else if (currentPower <= 1) {
       this.direction = 1;
     }
 

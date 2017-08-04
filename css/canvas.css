@@ -8,13 +8,18 @@ div {
   margin: 20px auto;
   border: 1px solid black; }
 
-input {
+input#power {
   writing-mode: bt-lr;
   /* IE */
   -webkit-appearance: slider-vertical;
   /* WebKit */
   position: absolute;
   top: 500px;
+  left: 60%; }
+
+input#angle {
+  position: absolute;
+  top: 550px;
   left: 60%; }
 
 /*# sourceMappingURL=canvas.css.map */

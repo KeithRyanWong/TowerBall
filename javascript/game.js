@@ -5,7 +5,8 @@ import Basket from './basket';
 
 
 class Game {
-  constructor(DIM_X, DIM_Y){
+  constructor(DIM_X, DIM_Y, user){
+    this.user = user;
     this.DIM_X = DIM_X;
     this.DIM_Y = DIM_Y;
     this.origin = {
@@ -18,6 +19,7 @@ class Game {
     const canvas = document.getElementById("main");
     // document.addEventListener('keypress', this.setPower.bind(this));
   }
+
 
 
   destroyBlock(e) {
@@ -67,7 +69,7 @@ class Game {
     while (tower.length < 6) {
       let lastMarkY = mark.y;
       let delta = Util.rand(30, 70);
-      mark.y -= delta + 2 ;
+      mark.y -= delta  ;
 
       let block = new Block(mark.x + Util.rand(0, mark.x), mark.y, Util.rand(20, 120), delta);
       tower.push(block);
@@ -91,16 +93,10 @@ class Game {
   }
 
   cycle() {
-    // return;
-    
     this.applyGravity();
     this.moveObjects();
     this.resolveCollisions();
     return;
-  }
-
-  queueShot() {
-
   }
 
   draw(ctx){
@@ -126,23 +122,15 @@ class Game {
   }
 
   resolveCollisions() {
-    // debugger;
     for(let i = 0; i < this.tower.length; i++) {
       for(let j = i + 1; j < this.tower.length; j++){
 
         let bottomBlock = this.tower[i];
         let block = this.tower[j];
-        // console.log(bottomBlock);
-        // console.log(block);
-        // console.log(Util.collisionDetected(bottomBlock, block));
         if(Util.collisionDetected(bottomBlock, block)){
           let lowerBlock = bottomBlock.bounds().bottom > block.bounds().bottom ? bottomBlock : block;
           let higherBlock = lowerBlock === bottomBlock ? block : bottomBlock;
-          //move higher block to end of lower block
-            // ->special case for gravity node, or just make node realy fat
-    
           higherBlock.position.y = lowerBlock.bounds().top - higherBlock.h;
-          //set velocity of higher block to 0;
     
           higherBlock.velocity.y = 0;
           i = 0;

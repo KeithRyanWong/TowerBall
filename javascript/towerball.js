@@ -8,8 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const width = canvas.clientWidth;
   const ctx = canvas.getContext('2d');
   
-  const game = new Game(width, height);
   const user = new User(ctx, width, height);
+  const game = new Game(width, height, user);
   const gameview = new GameView(game, user, ctx, width, height);
   gameview.start();
 });
