@@ -3,11 +3,11 @@ import PowerBar from './powerbar';
 import AngleBar from './anglebar';
 
 class User {
-  constructor(ctx, w, h) {
+  constructor(ctx, w, h, game) {
     this.w = w;
     this.h = h;
     this.ctx = ctx;
-
+    this.game = game;
     // let width = document.getElementsByTagName('body')[0].clientWidth;
     // let margin = Math.floor((width - this.DIM_X) / 2);
     this.ball = new Ball(w / 2, h - 20);
@@ -56,20 +56,23 @@ class User {
   }
 
   applySpeed() {
+    console.log(this.power);
     this.ball.velocity.y = this.velocity.y;
     this.ball.velocity.x = this.velocity.x;
 
     this.interval = setInterval(() => {
       this.ball.velocity.y += 0.20;
       this.ball.position.z += 0.05;
-      console.log(this.ball.position);
+      // console.log(this.ball.position);
     }, 10);
 
     setTimeout(() => {
       clearInterval(this.interval);
       console.log('hit: ', this.ball.position);
-      this.ball = new Ball(this.w / 2,this.h - 20);
-    }, 2200);
+
+      //log hit and reset
+      this.reset.call(this);
+    }, 2200 * (this.power / 100));
   }
 
   moveBall() {
@@ -81,6 +84,19 @@ class User {
 
   draw(ctx) {
     this.ball.draw(ctx, 0);
+  }
+
+
+  reset() {
+    this.ball = new Ball(this.w / 2,this.h - 20);
+    this.powerBar = new PowerBar();
+    this.angleBar = new AngleBar();
+    this.power = 0;
+    this.angle = 0;
+    this.velocity = {
+      x: 0,
+      y: 0
+    };
   }
 }
 
