@@ -48,7 +48,6 @@ class User {
       this.applySpeed();
     }
 
-    console.log(this.velocity);
   }
 
   cycle() {
@@ -56,19 +55,16 @@ class User {
   }
 
   applySpeed() {
-    console.log(this.power);
     this.ball.velocity.y = this.velocity.y;
     this.ball.velocity.x = this.velocity.x;
 
     this.interval = setInterval(() => {
       this.ball.velocity.y += 0.20;
       this.ball.position.z += 0.05 * 100 / this.power;
-      // console.log(this.ball.position);
     }, 10);
 
     setTimeout(() => {
       clearInterval(this.interval);
-      console.log('hit: ', this.ball.position);
       this.game.registerHit(this.ball.position);
       //log hit and reset
       this.reset.call(this);

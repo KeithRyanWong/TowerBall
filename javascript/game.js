@@ -25,7 +25,6 @@ class Game {
   registerHit(position) {
 
     //update count
-    // debugger;
     // e.preventDefault();
     let width = document.getElementsByTagName('body')[0].clientWidth;
     let margin = Math.floor((width - this.DIM_X) / 2);
@@ -34,7 +33,6 @@ class Game {
     // let canvasX = e.pageX - margin;
     // let canvasY = e.pageY - 20;
     this.tower.forEach((object, i) => {
-      // debugger;
       if (i !== 0 && object.occupies(canvasX, canvasY)){
         if(i === this.tower.length-1){
           this.gameWon();
