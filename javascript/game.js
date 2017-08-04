@@ -3,6 +3,7 @@ import Block from './block';
 import GravNode from './gravnode';
 import Basket from './basket';
 
+
 class Game {
   constructor(DIM_X, DIM_Y){
     this.DIM_X = DIM_X;
@@ -15,12 +16,13 @@ class Game {
     this.tower = this.setTower();
 
     const canvas = document.getElementById("main");
-    canvas.addEventListener('mousedown', this.destroyBlock.bind(this));
+    // document.addEventListener('keypress', this.setPower.bind(this));
   }
+
 
   destroyBlock(e) {
     // debugger;
-    e.preventDefault();
+    // e.preventDefault();
     let width = document.getElementsByTagName('body')[0].clientWidth;
     let margin = Math.floor((width - this.DIM_X) / 2);
     let canvasX = e.pageX - margin;
@@ -56,7 +58,6 @@ class Game {
     tower.push(new GravNode(mark.x, mark.y, mark.x, 500));
     this.generateBlocks(tower, mark);
     this.placeBasket(tower, mark);
-
     return tower;
   }
 

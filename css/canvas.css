@@ -1,8 +1,20 @@
+div {
+  height: 700px; }
+
 #main {
   display: block;
   width: 500px;
   height: 650px;
   margin: 20px auto;
   border: 1px solid black; }
+
+input {
+  writing-mode: bt-lr;
+  /* IE */
+  -webkit-appearance: slider-vertical;
+  /* WebKit */
+  position: absolute;
+  top: 500px;
+  left: 60%; }
 
 /*# sourceMappingURL=canvas.css.map */
