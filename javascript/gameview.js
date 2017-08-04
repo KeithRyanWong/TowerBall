@@ -14,7 +14,7 @@ class GameView {
       this.game.queueShot();
       this.game.cycle();
       this.game.draw(this.ctx);
-    }, 50);
+    }, 30);
   }
 }
 

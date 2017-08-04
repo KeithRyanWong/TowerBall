@@ -63,7 +63,7 @@ class Game {
   generateBlocks(tower, mark) {
     let attempts = 0;
 
-    while (tower.length < 5) {
+    while (tower.length < 6) {
       let lastMarkY = mark.y;
       let delta = Util.rand(30, 70);
       mark.y -= delta + 2 ;
@@ -119,7 +119,7 @@ class Game {
   applyGravity() {
     this.tower.forEach((obj) => {
       if (obj.velocity) {
-        obj.velocity.y = Math.floor((obj.velocity.y + 1) * 1.2);
+        obj.velocity.y = Math.floor((obj.velocity.y + 1));
       }
     });
   }
