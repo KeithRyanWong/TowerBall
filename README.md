@@ -56,7 +56,8 @@ In addition to the webpack entry file, there will be three scripts involved in t
 - Add flourishes using mo.js
 - Explore ways to make the game harder
 
-### Bonus features
-
+### Future Updates
+- [ ] Add wind and wind indicator
 - [ ] Add health and AI opponent
-- [ ] Obstacles
+- [ ] Switch out canvas shapes for sprites
+- [ ] Add instructions
