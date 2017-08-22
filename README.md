@@ -2,7 +2,7 @@
 
 [TowerBall Live][git]
 
-[git]: http://keithryanwong.github.io
+[git]: https://keithryanwong.github.io/TowerBall/
 
 TowerBall is a simple physics game where the player tries to hit a peg while avoiding letting it fall to the ground.
 
