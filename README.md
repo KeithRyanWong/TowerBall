@@ -26,7 +26,7 @@ Destructable - represents each object in the game, giving them positional variab
 
 Each time a new game starts, a tower of 5 blocks and 1 goalpast generates dynamically. The 5 blocks randomly vary in width and height, and will always spawn atop each other. There's a safety measure in place for when I choose to take into account each objects weight and center of gravity. It's tough to stack a tower that makes physical sense! So if it tries so many times and fails I have it stop before it burns out the processor. 
 
-```javscript
+```javascript
 generateBlocks(tower, mark) {
     let attempts = 0;
 
