@@ -696,7 +696,8 @@ class User {
 
     this.interval = setInterval(() => {
       this.ball.velocity.y += 0.20;
-      this.ball.position.z += 0.05 * 100 / this.power;
+      if(this.ball.position.z < 19)
+        this.ball.position.z += 0.05 * 100 / this.power;
     }, 10);
 
     setTimeout(() => {
