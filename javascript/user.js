@@ -22,6 +22,9 @@ class User {
       x: 0,
       y: 0
     };
+
+    this.before = true;
+    
   }
 
   listen() {
@@ -64,10 +67,13 @@ class User {
     }, 10);
 
     setTimeout(() => {
-      clearInterval(this.interval);
       this.game.registerHit(this.ball.position);
+      this.before = false;
       //log hit and reset
-      this.reset.call(this);
+      setTimeout(() => {
+        clearInterval(this.interval);
+        this.reset.call(this);
+      }, 1000);
     }, 2200 * (this.power / 100));
   }
 
@@ -79,12 +85,16 @@ class User {
   }
 
   draw(ctx) {
-    this.ball.draw(ctx, 0);
+    if (this.before) this.ball.draw(ctx, 0);
+  }
+  drawBehind(ctx) {
+    if (!this.before) this.ball.draw(ctx, 0);
   }
 
 
   reset() {
     this.ball = new Ball(this.w / 2,this.h - 20);
+    this.before = true;
     this.powerBar = new PowerBar();
     this.angleBar = new AngleBar();
     this.power = 0;

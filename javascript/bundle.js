@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -68,10 +68,102 @@
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+const randColor = () => ( 
+  '#' + Math.floor(Math.random()*16777215).toString(16) 
+);
+/* harmony export (immutable) */ __webpack_exports__["c"] = randColor;
+
+
+const rand = (min, max) => {
+  return Math.floor(Math.random() * (max - min)) + min;
+};
+/* harmony export (immutable) */ __webpack_exports__["b"] = rand;
+
+
+
+const centerOfGravity = (tower) => {
+  // let parent = tower.shift();
+  let datum = tower[0].position.x;
+  let weights = [];
+  let distances = [];
+  let moments = [];
+
+  tower.forEach((obj, i) => {
+    weights.push(obj.area);
+    distances.push(((obj.w / 2.0) + obj.position.x) - datum);
+    moments.push(weights[i] * distances[i]);
+  });
+
+  let moment = moments.reduce((sum, objMoment) => (sum + objMoment), 0);
+  let weight = weights.reduce((sum, objWeight) => (sum + objWeight), 0);
+  
+  return (moment / weight) + datum;
+};
+/* unused harmony export centerOfGravity */
+
+
+const validPlacement = (tower) => {
+  for (let i = tower.length - 1; i > 0; i--) {
+    let CoGOfLastBlock = centerOfGravity(tower.slice(i));
+    let bottomBlock = tower[i - 1];
+    let bound1 = bottomBlock.position.x;
+    let bound2 = bottomBlock.position.x + bottomBlock.w;
+    //switch parity of variable to constrain within valid CoG
+    if(CoGOfLastBlock < (bound1) - 10 || CoGOfLastBlock > (bound2) + 10) {
+      return false;
+    }
+  }
+  return true;
+};
+/* harmony export (immutable) */ __webpack_exports__["d"] = validPlacement;
+
+
+const collisionDetected = (block, block2) => {
+  let yCollision1 = ( 
+      block.bounds().top < block2.bounds().bottom &&
+      block.bounds().bottom > block2.bounds().bottom 
+  ) || ( 
+      block.bounds().top < block2.bounds().top &&
+      block.bounds().bottom > block2.bounds().top
+  ); 
+  let yCollision2 = ( 
+      block2.bounds().top < block.bounds().bottom &&
+      block2.bounds().bottom > block.bounds().bottom 
+  ) || ( 
+      block2.bounds().top < block.bounds().top &&
+      block2.bounds().bottom > block.bounds().top
+  ); 
+
+  let xCollision1 = ( 
+      block.bounds().left < block2.bounds().left &&
+      block.bounds().right > block2.bounds().left
+  ) || (
+      block.bounds().left < block2.bounds().right &&
+      block.bounds().right > block2.bounds().right
+  );
+  let xCollision2 = ( 
+      block2.bounds().left < block.bounds().left &&
+      block2.bounds().right > block.bounds().left
+  ) || (
+      block2.bounds().left < block.bounds().right &&
+      block2.bounds().right > block.bounds().right
+  );
+
+
+  return((yCollision1 && xCollision1) || (yCollision2 && xCollision2));
+};
+/* harmony export (immutable) */ __webpack_exports__["a"] = collisionDetected;
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__game__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__gameview__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__user__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__game__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__gameview__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__user__ = __webpack_require__(7);
 
 
 
@@ -89,14 +181,14 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /***/ }),
-/* 1 */
+/* 2 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__block__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__gravnode__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__basket__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__block__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__gravnode__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__basket__ = __webpack_require__(5);
 
 
 
@@ -124,7 +216,6 @@ class Game {
   registerHit(position) {
 
     //update count
-    // debugger;
     // e.preventDefault();
     let width = document.getElementsByTagName('body')[0].clientWidth;
     let margin = Math.floor((width - this.DIM_X) / 2);
@@ -133,7 +224,6 @@ class Game {
     // let canvasX = e.pageX - margin;
     // let canvasY = e.pageY - 20;
     this.tower.forEach((object, i) => {
-      // debugger;
       if (i !== 0 && object.occupies(canvasX, canvasY)){
         if(i === this.tower.length-1){
           this.gameWon();
@@ -265,11 +355,11 @@ class Game {
 /* harmony default export */ __webpack_exports__["a"] = (Game);
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util__ = __webpack_require__(0);
 
 
 class Block {
@@ -347,136 +437,11 @@ class Block {
 /* harmony default export */ __webpack_exports__["a"] = (Block);
 
 /***/ }),
-/* 3 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-const randColor = () => ( 
-  '#' + Math.floor(Math.random()*16777215).toString(16) 
-);
-/* harmony export (immutable) */ __webpack_exports__["c"] = randColor;
-
-
-const rand = (min, max) => {
-  return Math.floor(Math.random() * (max - min)) + min;
-};
-/* harmony export (immutable) */ __webpack_exports__["b"] = rand;
-
-
-
-const centerOfGravity = (tower) => {
-  // let parent = tower.shift();
-  let datum = tower[0].position.x;
-  let weights = [];
-  let distances = [];
-  let moments = [];
-
-  tower.forEach((obj, i) => {
-    weights.push(obj.area);
-    distances.push(((obj.w / 2.0) + obj.position.x) - datum);
-    moments.push(weights[i] * distances[i]);
-  });
-
-  let moment = moments.reduce((sum, objMoment) => (sum + objMoment), 0);
-  let weight = weights.reduce((sum, objWeight) => (sum + objWeight), 0);
-  
-  return (moment / weight) + datum;
-};
-/* unused harmony export centerOfGravity */
-
-
-const validPlacement = (tower) => {
-  for (let i = tower.length - 1; i > 0; i--) {
-    let CoGOfLastBlock = centerOfGravity(tower.slice(i));
-    let bottomBlock = tower[i - 1];
-    let bound1 = bottomBlock.position.x;
-    let bound2 = bottomBlock.position.x + bottomBlock.w;
-    //switch parity of variable to constrain within valid CoG
-    if(CoGOfLastBlock < (bound1) - 10 || CoGOfLastBlock > (bound2) + 10) {
-      return false;
-    }
-  }
-  return true;
-};
-/* harmony export (immutable) */ __webpack_exports__["d"] = validPlacement;
-
-
-const collisionDetected = (block, block2) => {
-  let yCollision1 = ( 
-      block.bounds().top < block2.bounds().bottom &&
-      block.bounds().bottom > block2.bounds().bottom 
-  ) || ( 
-      block.bounds().top < block2.bounds().top &&
-      block.bounds().bottom > block2.bounds().top
-  ); 
-  let yCollision2 = ( 
-      block2.bounds().top < block.bounds().bottom &&
-      block2.bounds().bottom > block.bounds().bottom 
-  ) || ( 
-      block2.bounds().top < block.bounds().top &&
-      block2.bounds().bottom > block.bounds().top
-  ); 
-
-  let xCollision1 = ( 
-      block.bounds().left < block2.bounds().left &&
-      block.bounds().right > block2.bounds().left
-  ) || (
-      block.bounds().left < block2.bounds().right &&
-      block.bounds().right > block2.bounds().right
-  );
-  let xCollision2 = ( 
-      block2.bounds().left < block.bounds().left &&
-      block2.bounds().right > block.bounds().left
-  ) || (
-      block2.bounds().left < block.bounds().right &&
-      block2.bounds().right > block.bounds().right
-  );
-
-
-  return((yCollision1 && xCollision1) || (yCollision2 && xCollision2));
-};
-/* harmony export (immutable) */ __webpack_exports__["a"] = collisionDetected;
-
-
-/***/ }),
 /* 4 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-class GameView {
-  constructor(game, user, ctx, w, h) {
-    this.game = game;
-    this.ctx = ctx;
-    this. w = w;
-    this.h = h;
-    this.user = user;
-  }
-  
-
-  start() {
-    
-    setInterval(() => { 
-      this.ctx.clearRect(0, 0, this.w, this.h);
-      this.game.cycle();
-      this.game.draw(this.ctx);
-      this.user.cycle();
-      this.user.draw(this.ctx);
-    }, 30);
-    
-  }
-}
-
-/* harmony default export */ __webpack_exports__["a"] = (GameView);
-
-/***/ }),
-/* 5 */,
-/* 6 */,
-/* 7 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util__ = __webpack_require__(0);
 
 
 class GravNode {
@@ -549,11 +514,11 @@ class GravNode {
 /* harmony default export */ __webpack_exports__["a"] = (GravNode);
 
 /***/ }),
-/* 8 */
+/* 5 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util__ = __webpack_require__(0);
 
 
 class Basket {
@@ -627,7 +592,158 @@ class Basket {
 /* harmony default export */ __webpack_exports__["a"] = (Basket);
 
 /***/ }),
-/* 9 */
+/* 6 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+class GameView {
+  constructor(game, user, ctx, w, h) {
+    this.game = game;
+    this.ctx = ctx;
+    this. w = w;
+    this.h = h;
+    this.user = user;
+  }
+  
+
+  start() {
+    
+    setInterval(() => { 
+      this.ctx.clearRect(0, 0, this.w, this.h);
+      this.game.cycle();
+      this.user.drawBehind(this.ctx);
+      this.game.draw(this.ctx);
+      this.user.cycle();
+      this.user.draw(this.ctx);
+    }, 30);
+    
+  }
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (GameView);
+
+/***/ }),
+/* 7 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ball__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__powerbar__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__anglebar__ = __webpack_require__(10);
+
+
+
+
+class User {
+  constructor(ctx, w, h, game) {
+    this.w = w;
+    this.h = h;
+    this.ctx = ctx;
+    this.game = game;
+    // let width = document.getElementsByTagName('body')[0].clientWidth;
+    // let margin = Math.floor((width - this.DIM_X) / 2);
+    this.ball = new __WEBPACK_IMPORTED_MODULE_0__ball__["a" /* default */](w / 2, h - 20);
+    this.power = 0;
+    this.angle = 0;
+    document.addEventListener('keypress', this.setPower.bind(this));
+    
+    this.powerBar = new __WEBPACK_IMPORTED_MODULE_1__powerbar__["a" /* default */]();
+    this.angleBar = new __WEBPACK_IMPORTED_MODULE_2__anglebar__["a" /* default */]();
+    this.interval;
+    this.velocity = {
+      x: 0,
+      y: 0
+    };
+
+    this.before = true;
+    
+  }
+
+  listen() {
+    
+  }
+
+  setPower(e){
+    e.preventDefault();
+
+    let power = document.getElementById('power');
+    let currentPower = parseInt(power.value);
+    let angle = document.getElementById('angle');
+    let currentAngle = parseInt(angle.value);
+
+    if(e.keyCode === 32 && this.power === 0) {
+      this.velocity.y = (-(currentPower * .3));
+      this.power = currentPower;
+      clearInterval(this.powerBar.interval);
+      this.interval =  setInterval(() => this.angleBar.setPower(), 10);
+    } else if(e.keyCode === 32 && this.angle === 0) {
+      this.velocity.x = ((currentAngle - 50) * 0.1);
+      this.angle = currentAngle;
+      clearInterval(this.interval);
+      this.applySpeed();
+    }
+
+  }
+
+  cycle() {
+    this.moveBall();
+  }
+
+  applySpeed() {
+    this.ball.velocity.y = this.velocity.y;
+    this.ball.velocity.x = this.velocity.x;
+
+    this.interval = setInterval(() => {
+      this.ball.velocity.y += 0.20;
+      this.ball.position.z += 0.05 * 100 / this.power;
+    }, 10);
+
+    setTimeout(() => {
+      this.game.registerHit(this.ball.position);
+      this.before = false;
+      //log hit and reset
+      setTimeout(() => {
+        clearInterval(this.interval);
+        this.reset.call(this);
+      }, 1000);
+    }, 2200 * (this.power / 100));
+  }
+
+  moveBall() {
+    let { position, velocity } = this.ball;
+    position.x += velocity.x;
+    position.y += velocity.y;
+    // velocity.y += velocity.y;
+  }
+
+  draw(ctx) {
+    if (this.before) this.ball.draw(ctx, 0);
+  }
+  drawBehind(ctx) {
+    if (!this.before) this.ball.draw(ctx, 0);
+  }
+
+
+  reset() {
+    this.ball = new __WEBPACK_IMPORTED_MODULE_0__ball__["a" /* default */](this.w / 2,this.h - 20);
+    this.before = true;
+    this.powerBar = new __WEBPACK_IMPORTED_MODULE_1__powerbar__["a" /* default */]();
+    this.angleBar = new __WEBPACK_IMPORTED_MODULE_2__anglebar__["a" /* default */]();
+    this.power = 0;
+    this.angle = 0;
+    this.velocity = {
+      x: 0,
+      y: 0
+    };
+  }
+}
+
+
+/* harmony default export */ __webpack_exports__["a"] = (User);
+
+/***/ }),
+/* 8 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -668,120 +784,7 @@ class Ball {
 /* harmony default export */ __webpack_exports__["a"] = (Ball);
 
 /***/ }),
-/* 10 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ball__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__powerbar__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__anglebar__ = __webpack_require__(12);
-
-
-
-
-class User {
-  constructor(ctx, w, h, game) {
-    this.w = w;
-    this.h = h;
-    this.ctx = ctx;
-    this.game = game;
-    // let width = document.getElementsByTagName('body')[0].clientWidth;
-    // let margin = Math.floor((width - this.DIM_X) / 2);
-    this.ball = new __WEBPACK_IMPORTED_MODULE_0__ball__["a" /* default */](w / 2, h - 20);
-    this.power = 0;
-    this.angle = 0;
-    document.addEventListener('keypress', this.setPower.bind(this));
-    
-    this.powerBar = new __WEBPACK_IMPORTED_MODULE_1__powerbar__["a" /* default */]();
-    this.angleBar = new __WEBPACK_IMPORTED_MODULE_2__anglebar__["a" /* default */]();
-    this.interval;
-    this.velocity = {
-      x: 0,
-      y: 0
-    };
-  }
-
-  listen() {
-    
-  }
-
-  setPower(e){
-    e.preventDefault();
-
-    let power = document.getElementById('power');
-    let currentPower = parseInt(power.value);
-    let angle = document.getElementById('angle');
-    let currentAngle = parseInt(angle.value);
-
-    if(e.keyCode === 32 && this.power === 0) {
-      this.velocity.y = (-(currentPower * .3));
-      this.power = currentPower;
-      clearInterval(this.powerBar.interval);
-      this.interval =  setInterval(() => this.angleBar.setPower(), 10);
-    } else if(e.keyCode === 32 && this.angle === 0) {
-      this.velocity.x = ((currentAngle - 50) * 0.1);
-      this.angle = currentAngle;
-      clearInterval(this.interval);
-      this.applySpeed();
-    }
-
-    console.log(this.velocity);
-  }
-
-  cycle() {
-    this.moveBall();
-  }
-
-  applySpeed() {
-    console.log(this.power);
-    this.ball.velocity.y = this.velocity.y;
-    this.ball.velocity.x = this.velocity.x;
-
-    this.interval = setInterval(() => {
-      this.ball.velocity.y += 0.20;
-      this.ball.position.z += 0.05 * 100 / this.power;
-      // console.log(this.ball.position);
-    }, 10);
-
-    setTimeout(() => {
-      clearInterval(this.interval);
-      console.log('hit: ', this.ball.position);
-      this.game.registerHit(this.ball.position);
-      //log hit and reset
-      this.reset.call(this);
-    }, 2200 * (this.power / 100));
-  }
-
-  moveBall() {
-    let { position, velocity } = this.ball;
-    position.x += velocity.x;
-    position.y += velocity.y;
-    // velocity.y += velocity.y;
-  }
-
-  draw(ctx) {
-    this.ball.draw(ctx, 0);
-  }
-
-
-  reset() {
-    this.ball = new __WEBPACK_IMPORTED_MODULE_0__ball__["a" /* default */](this.w / 2,this.h - 20);
-    this.powerBar = new __WEBPACK_IMPORTED_MODULE_1__powerbar__["a" /* default */]();
-    this.angleBar = new __WEBPACK_IMPORTED_MODULE_2__anglebar__["a" /* default */]();
-    this.power = 0;
-    this.angle = 0;
-    this.velocity = {
-      x: 0,
-      y: 0
-    };
-  }
-}
-
-
-/* harmony default export */ __webpack_exports__["a"] = (User);
-
-/***/ }),
-/* 11 */
+/* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -812,7 +815,7 @@ class PowerBar {
 /* harmony default export */ __webpack_exports__["a"] = (PowerBar);
 
 /***/ }),
-/* 12 */
+/* 10 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
